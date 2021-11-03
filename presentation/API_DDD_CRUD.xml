@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>API_DDD_CRUD</name>
+    </assembly>
+    <members>
+        <member name="M:API_DDD_CRUD.Controllers.ProductsController.Get(System.Int32)">
+            <summary>
+             EndPoint para coletar registros por Id 
+            </summary>
+            <param name="id"> Id do registro</param>
+            <returns></returns>
+        </member>
+        <member name="M:API_DDD_CRUD.Controllers.ProductsController.GetList">
+            <summary>
+             EndPoint para coletar todos os registros da base
+            </summary>
+        </member>
+        <member name="M:API_DDD_CRUD.Controllers.ProductsController.Post(Entities.Entities.Product)">
+            <summary>
+            EndPoint para cadastrar um novo registro
+            </summary>
+            <param name="product"> Parametro produto</param>
+            <returns></returns>
+        </member>
+        <member name="M:API_DDD_CRUD.Controllers.ProductsController.Put(Entities.Entities.Product)">
+            <summary>
+            Endpoint para atualizar um registro
+            </summary>
+            <param name="product">Parametro atualizacao</param>
+            <returns></returns>
+        </member>
+        <member name="M:API_DDD_CRUD.Controllers.ProductsController.Delete(System.Int32)">
+            <summary>
+            EndPoint para deletar um registro
+            </summary>
+            <param name="id">Id do registro</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

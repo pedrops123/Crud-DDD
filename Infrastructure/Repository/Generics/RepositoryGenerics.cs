@@ -1,4 +1,6 @@
 ﻿using Domain.Interfaces.Generics;
+using Infrastructure.Configurations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
@@ -11,41 +13,68 @@ namespace Infrastructure.Repository.Generics
 {
     public class RepositoryGenerics<T> : IGeneric<T>, IDisposable where T : class
     {
+        private readonly DbContextOptions<ContextBase> _OptionsBuilder;
+
+
+        public RepositoryGenerics()
+        {
+            _OptionsBuilder = new DbContextOptions<ContextBase>();
+        }
+
         // Flag: Has Dispose already been called?
         bool disposed = false;
         // Instantiate a SafeHandle instance.
         SafeHandle handle = new SafeFileHandle(IntPtr.Zero, true);
 
-        public Task Add(T Objeto)
+        public async Task Add(T Objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionsBuilder))
+            {
+                await data.Set<T>().AddAsync(Objeto);
+                await data.SaveChangesAsync();
+            }
         }
 
-        public Task Delete(T Objeto)
+        public async Task Delete(T Objeto)
         {
-            throw new NotImplementedException();
+            using (var data = new ContextBase(_OptionsBuilder))
+            {
+                data.Set<T>().Remove(Objeto);
+                await data.SaveChangesAsync();
+            }
         }
+
+        public async Task<T> GetEntityById(int id)
+        {
+            using (var data = new ContextBase(_OptionsBuilder))
+            {
+                return await data.Set<T>().FindAsync(id);
+            }
+        }
+
+        public async Task<List<T>> List()
+        {
+            using (var data = new ContextBase(_OptionsBuilder))
+            {
+                return await data.Set<T>().AsNoTracking().ToListAsync();
+            }
+        }
+
+        public async Task Update(T Objeto)
+        {
+            using (var data = new ContextBase(_OptionsBuilder))
+            {
+                data.Set<T>().Update(Objeto);
+                await data.SaveChangesAsync();
+            }
+        }
+
 
         // Public implementation of Dispose pattern callable by consumers.
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        public Task<T> GetEntityById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<T>> List()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(T Objeto)
-        {
-            throw new NotImplementedException();
         }
 
         // Protected implementation of Dispose pattern.
